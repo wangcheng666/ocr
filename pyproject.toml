@@ -1,0 +1,17 @@
+[project]
+name = "ocr"
+version = "0.1.0"
+requires-python = ">=3.10"
+dependencies = [
+    "mineru",
+    "fastapi",
+    "uvicorn",
+    "python-multipart",
+    "python-dotenv",
+]
+
+[tool.uv.sources]
+mineru = { workspace = true }
+
+[tool.uv.workspace]
+members = ["MinerU"]
