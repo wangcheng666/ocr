@@ -44,6 +44,9 @@ MinerU 保持官方原样，fastapi/uvicorn 为其自带的 `mineru-api` / `mine
 - [x] 运行 `uv sync` 初始化统一环境
 
 ### Phase 2: Server 基础框架
+- [x] 实现引擎选择功能：支持 `hybrid` / `vlm` 两种引擎，通过 `engine` 参数选择，默认 hybrid
+- [x] 增加 Office 引擎支持：`docx` / `pptx` / `xlsx` 自动路由到对应解析器
+- [x] 文件类型检测与引擎兼容性校验：上传时自动识别类型，引擎不匹配时返回 400 错误
 - [ ] ...
 
 ---
