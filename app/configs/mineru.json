@@ -23,15 +23,14 @@
     },
     "llm-aided-config": {
         "title_aided": {
-            "api_key": "your_api_key",
-            "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
-            "model": "qwen3.5-plus",
-            "enable_thinking": false,
-            "enable": false
+            "api_key": "test",
+            "base_url": "http://10.251.146.132:8006/v1",
+            "model": "Qwen3.6-35B-A3B",
+            "enable": true
         }
     },
     "models-dir": {
-        "pipeline": "/home/czce/Documents/code/python/ocr/MinerU/models/pipeline",
+        "pipeline": "/home/czce/Documents/code/python/ocr/models/pipeline",
         "vlm": ""
     },
     "model-source": "local",

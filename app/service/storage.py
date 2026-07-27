@@ -38,3 +38,32 @@ def build_minio_writer(prefix: str, bucket_name: str) -> S3DataWriter:
         sk=MINIO_SECRET_KEY,
         endpoint_url=f"http://{MINIO_ENDPOINT}",
     )
+
+
+def build_minio_client():
+    """构建低级别 boto3 S3 客户端，用于 presigned URL 等操作"""
+    import boto3
+    from botocore.config import Config
+
+    return boto3.client(
+        "s3",
+        endpoint_url=f"http://{MINIO_ENDPOINT}",
+        aws_access_key_id=MINIO_ACCESS_KEY,
+        aws_secret_access_key=MINIO_SECRET_KEY,
+        config=Config(signature_version="s3v4"),
+        region_name="us-east-1",
+    )
+
+
+def generate_download_url(
+    bucket: str,
+    key: str,
+    expires_in: int = 3600,
+) -> str:
+    """生成 MinIO 对象预签名下载链接（默认 1 小时有效）"""
+    client = build_minio_client()
+    return client.generate_presigned_url(
+        "get_object",
+        Params={"Bucket": bucket, "Key": key},
+        ExpiresIn=expires_in,
+    )

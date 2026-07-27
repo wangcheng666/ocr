@@ -1,0 +1,1188 @@
+{
+  "pdf_info": [
+    {
+      "preproc_blocks": [
+        {
+          "bbox": [
+            86,
+            74,
+            499,
+            100
+          ],
+          "type": "title",
+          "angle": 0,
+          "lines": [
+            {
+              "bbox": [
+                86,
+                74,
+                499,
+                100
+              ],
+              "spans": [
+                {
+                  "bbox": [
+                    86,
+                    74,
+                    499,
+                    100
+                  ],
+                  "type": "text",
+                  "content": "郑州商品交易所期货交易风险控制管理办法"
+                }
+              ]
+            }
+          ],
+          "index": 0,
+          "level": 1
+        },
+        {
+          "bbox": [
+            86,
+            103,
+            496,
+            134
+          ],
+          "type": "text",
+          "angle": 0,
+          "lines": [
+            {
+              "bbox": [
+                86,
+                103,
+                496,
+                134
+              ],
+              "spans": [
+                {
+                  "bbox": [
+                    86,
+                    103,
+                    496,
+                    134
+                  ],
+                  "type": "text",
+                  "content": "(2026 年 4 月 7 日郑州商品交易所第八届理事会第三十四次会议审议通过, 2026 年 5 月 7 日〔2026〕68 号公告发布, 自发布之日起实施)"
+                }
+              ]
+            }
+          ],
+          "index": 1,
+          "merge_prev": false
+        },
+        {
+          "bbox": [
+            87,
+            140,
+            184,
+            158
+          ],
+          "type": "title",
+          "angle": 0,
+          "lines": [
+            {
+              "bbox": [
+                87,
+                140,
+                184,
+                158
+              ],
+              "spans": [
+                {
+                  "bbox": [
+                    87,
+                    140,
+                    184,
+                    158
+                  ],
+                  "type": "text",
+                  "content": "第一章 总 则"
+                }
+              ]
+            }
+          ],
+          "index": 2,
+          "level": 2
+        },
+        {
+          "bbox": [
+            86,
+            172,
+            506,
+            253
+          ],
+          "type": "text",
+          "angle": 0,
+          "lines": [
+            {
+              "bbox": [
+                86,
+                172,
+                506,
+                253
+              ],
+              "spans": [
+                {
+                  "bbox": [
+                    86,
+                    172,
+                    506,
+                    253
+                  ],
+                  "type": "text",
+                  "content": "第一条 为加强期货交易风险管理, 维护期货交易当事人的合法权益,保证郑州商品交易所 (以下简称交易所) 期货交易的正常进行, 根据《郑州商品交易所交易规则》, 制定本办法。"
+                }
+              ]
+            }
+          ],
+          "index": 3,
+          "merge_prev": false
+        },
+        {
+          "bbox": [
+            86,
+            265,
+            505,
+            314
+          ],
+          "type": "text",
+          "angle": 0,
+          "lines": [
+            {
+              "bbox": [
+                86,
+                265,
+                505,
+                314
+              ],
+              "spans": [
+                {
+                  "bbox": [
+                    86,
+                    265,
+                    505,
+                    314
+                  ],
+                  "type": "text",
+                  "content": "第二条 期货交易风险管理实行保证金制度、涨跌停板制度、限仓制度、交易限额制度、大户报告制度、强行平仓制度、风险警示制度。"
+                }
+              ]
+            }
+          ],
+          "index": 4,
+          "merge_prev": false
+        },
+        {
+          "bbox": [
+            86,
+            327,
+            507,
+            502
+          ],
+          "type": "text",
+          "angle": 0,
+          "lines": [
+            {
+              "bbox": [
+                86,
+                327,
+                507,
+                502
+              ],
+              "spans": [
+                {
+                  "bbox": [
+                    86,
+                    327,
+                    507,
+                    502
+                  ],
+                  "type": "text",
+                  "content": "第三条 交易所、会员、境外特殊参与者、境外中介机构和客户应当遵守本办法。境外特殊经纪参与者和境外中介机构应当辅助其委托交易结算的期货公司会员做好境外客户的强行平仓、大户报告、风险提示等工作。期货公司会员应当将涉及境外特殊经纪参与者的客户和境外中介机构的客户的《强行平仓通知书》、强行平仓结果、风险提示函等及时通知境外特殊经纪参与者和境外中介机构。"
+                }
+              ]
+            }
+          ],
+          "index": 5,
+          "merge_prev": false
+        },
+        {
+          "type": "image",
+          "bbox": [
+            143,
+            509,
+            449,
+            739
+          ],
+          "blocks": [
+            {
+              "bbox": [
+                143,
+                509,
+                449,
+                739
+              ],
+              "type": "image_body",
+              "angle": 0,
+              "lines": [
+                {
+                  "bbox": [
+                    143,
+                    509,
+                    449,
+                    739
+                  ],
+                  "spans": [
+                    {
+                      "bbox": [
+                        143,
+                        509,
+                        449,
+                        739
+                      ],
+                      "type": "image",
+                      "content": "Scenic landscape with yellow flower fields, green grassland, and a calm blue sea under a partly cloudy sky (no text or symbols visible)",
+                      "image_path": "16815e289b2d7e5b046bbf8bd0bda9d97e8982597399a13d2242f5cc4b38a93d.jpg"
+                    }
+                  ]
+                }
+              ],
+              "index": 6
+            },
+            {
+              "bbox": [
+                268,
+                742,
+                325,
+                756
+              ],
+              "type": "image_caption",
+              "angle": 0,
+              "lines": [
+                {
+                  "bbox": [
+                    268,
+                    742,
+                    325,
+                    756
+                  ],
+                  "spans": [
+                    {
+                      "bbox": [
+                        268,
+                        742,
+                        325,
+                        756
+                      ],
+                      "type": "text",
+                      "content": "风景图 二"
+                    }
+                  ]
+                }
+              ],
+              "index": 7
+            }
+          ],
+          "index": 6,
+          "sub_type": "natural_image"
+        }
+      ],
+      "discarded_blocks": [],
+      "page_size": [
+        595,
+        841
+      ],
+      "page_idx": 0,
+      "para_blocks": [
+        {
+          "bbox": [
+            86,
+            74,
+            499,
+            100
+          ],
+          "type": "title",
+          "angle": 0,
+          "lines": [
+            {
+              "bbox": [
+                86,
+                74,
+                499,
+                100
+              ],
+              "spans": [
+                {
+                  "bbox": [
+                    86,
+                    74,
+                    499,
+                    100
+                  ],
+                  "type": "text",
+                  "content": "郑州商品交易所期货交易风险控制管理办法"
+                }
+              ]
+            }
+          ],
+          "index": 0,
+          "level": 1
+        },
+        {
+          "bbox": [
+            86,
+            103,
+            496,
+            134
+          ],
+          "type": "text",
+          "angle": 0,
+          "lines": [
+            {
+              "bbox": [
+                86,
+                103,
+                496,
+                134
+              ],
+              "spans": [
+                {
+                  "bbox": [
+                    86,
+                    103,
+                    496,
+                    134
+                  ],
+                  "type": "text",
+                  "content": "(2026 年 4 月 7 日郑州商品交易所第八届理事会第三十四次会议审议通过, 2026 年 5 月 7 日〔2026〕68 号公告发布, 自发布之日起实施)"
+                }
+              ]
+            }
+          ],
+          "index": 1,
+          "merge_prev": false
+        },
+        {
+          "bbox": [
+            87,
+            140,
+            184,
+            158
+          ],
+          "type": "title",
+          "angle": 0,
+          "lines": [
+            {
+              "bbox": [
+                87,
+                140,
+                184,
+                158
+              ],
+              "spans": [
+                {
+                  "bbox": [
+                    87,
+                    140,
+                    184,
+                    158
+                  ],
+                  "type": "text",
+                  "content": "第一章 总 则"
+                }
+              ]
+            }
+          ],
+          "index": 2,
+          "level": 2
+        },
+        {
+          "bbox": [
+            86,
+            172,
+            506,
+            253
+          ],
+          "type": "text",
+          "angle": 0,
+          "lines": [
+            {
+              "bbox": [
+                86,
+                172,
+                506,
+                253
+              ],
+              "spans": [
+                {
+                  "bbox": [
+                    86,
+                    172,
+                    506,
+                    253
+                  ],
+                  "type": "text",
+                  "content": "第一条 为加强期货交易风险管理, 维护期货交易当事人的合法权益,保证郑州商品交易所 (以下简称交易所) 期货交易的正常进行, 根据《郑州商品交易所交易规则》, 制定本办法。"
+                }
+              ]
+            }
+          ],
+          "index": 3,
+          "merge_prev": false
+        },
+        {
+          "bbox": [
+            86,
+            265,
+            505,
+            314
+          ],
+          "type": "text",
+          "angle": 0,
+          "lines": [
+            {
+              "bbox": [
+                86,
+                265,
+                505,
+                314
+              ],
+              "spans": [
+                {
+                  "bbox": [
+                    86,
+                    265,
+                    505,
+                    314
+                  ],
+                  "type": "text",
+                  "content": "第二条 期货交易风险管理实行保证金制度、涨跌停板制度、限仓制度、交易限额制度、大户报告制度、强行平仓制度、风险警示制度。"
+                }
+              ]
+            }
+          ],
+          "index": 4,
+          "merge_prev": false
+        },
+        {
+          "bbox": [
+            86,
+            327,
+            507,
+            502
+          ],
+          "type": "text",
+          "angle": 0,
+          "lines": [
+            {
+              "bbox": [
+                86,
+                327,
+                507,
+                502
+              ],
+              "spans": [
+                {
+                  "bbox": [
+                    86,
+                    327,
+                    507,
+                    502
+                  ],
+                  "type": "text",
+                  "content": "第三条 交易所、会员、境外特殊参与者、境外中介机构和客户应当遵守本办法。境外特殊经纪参与者和境外中介机构应当辅助其委托交易结算的期货公司会员做好境外客户的强行平仓、大户报告、风险提示等工作。期货公司会员应当将涉及境外特殊经纪参与者的客户和境外中介机构的客户的《强行平仓通知书》、强行平仓结果、风险提示函等及时通知境外特殊经纪参与者和境外中介机构。"
+                }
+              ]
+            }
+          ],
+          "index": 5,
+          "merge_prev": false
+        },
+        {
+          "type": "image",
+          "bbox": [
+            143,
+            509,
+            449,
+            739
+          ],
+          "blocks": [
+            {
+              "bbox": [
+                143,
+                509,
+                449,
+                739
+              ],
+              "type": "image_body",
+              "angle": 0,
+              "lines": [
+                {
+                  "bbox": [
+                    143,
+                    509,
+                    449,
+                    739
+                  ],
+                  "spans": [
+                    {
+                      "bbox": [
+                        143,
+                        509,
+                        449,
+                        739
+                      ],
+                      "type": "image",
+                      "content": "Scenic landscape with yellow flower fields, green grassland, and a calm blue sea under a partly cloudy sky (no text or symbols visible)",
+                      "image_path": "16815e289b2d7e5b046bbf8bd0bda9d97e8982597399a13d2242f5cc4b38a93d.jpg"
+                    }
+                  ]
+                }
+              ],
+              "index": 6
+            },
+            {
+              "bbox": [
+                268,
+                742,
+                325,
+                756
+              ],
+              "type": "image_caption",
+              "angle": 0,
+              "lines": [
+                {
+                  "bbox": [
+                    268,
+                    742,
+                    325,
+                    756
+                  ],
+                  "spans": [
+                    {
+                      "bbox": [
+                        268,
+                        742,
+                        325,
+                        756
+                      ],
+                      "type": "text",
+                      "content": "风景图 二"
+                    }
+                  ]
+                }
+              ],
+              "index": 7
+            }
+          ],
+          "index": 6,
+          "sub_type": "natural_image"
+        }
+      ]
+    },
+    {
+      "preproc_blocks": [
+        {
+          "bbox": [
+            86,
+            109,
+            223,
+            126
+          ],
+          "type": "title",
+          "angle": 0,
+          "lines": [
+            {
+              "bbox": [
+                86,
+                109,
+                223,
+                126
+              ],
+              "spans": [
+                {
+                  "bbox": [
+                    86,
+                    109,
+                    223,
+                    126
+                  ],
+                  "type": "text",
+                  "content": "第二章 保证金制度"
+                }
+              ]
+            }
+          ],
+          "index": 0,
+          "level": 2
+        },
+        {
+          "bbox": [
+            86,
+            141,
+            298,
+            158
+          ],
+          "type": "text",
+          "angle": 0,
+          "lines": [
+            {
+              "bbox": [
+                86,
+                141,
+                298,
+                158
+              ],
+              "spans": [
+                {
+                  "bbox": [
+                    86,
+                    141,
+                    298,
+                    158
+                  ],
+                  "type": "text",
+                  "content": "第四条 期货交易实行保证金制度。"
+                }
+              ]
+            }
+          ],
+          "index": 1,
+          "merge_prev": false
+        },
+        {
+          "type": "image",
+          "bbox": [
+            163,
+            165,
+            429,
+            365
+          ],
+          "blocks": [
+            {
+              "bbox": [
+                163,
+                165,
+                429,
+                365
+              ],
+              "type": "image_body",
+              "angle": 0,
+              "lines": [
+                {
+                  "bbox": [
+                    163,
+                    165,
+                    429,
+                    365
+                  ],
+                  "spans": [
+                    {
+                      "bbox": [
+                        163,
+                        165,
+                        429,
+                        365
+                      ],
+                      "type": "image",
+                      "content": "Scenic landscape with a vibrant yellow flower field beside a calm blue sea under a partly cloudy sky (no text or symbols visible)",
+                      "image_path": "599234c3b9e0cf99ed63d2cc6e72b045ce7604124aa6b25d414ad8e10112b2e6.jpg"
+                    }
+                  ]
+                }
+              ],
+              "index": 2
+            },
+            {
+              "bbox": [
+                268,
+                367,
+                324,
+                382
+              ],
+              "type": "image_caption",
+              "angle": 0,
+              "lines": [
+                {
+                  "bbox": [
+                    268,
+                    367,
+                    324,
+                    382
+                  ],
+                  "spans": [
+                    {
+                      "bbox": [
+                        268,
+                        367,
+                        324,
+                        382
+                      ],
+                      "type": "text",
+                      "content": "风景图 一"
+                    }
+                  ]
+                }
+              ],
+              "index": 3
+            }
+          ],
+          "index": 2,
+          "sub_type": "natural_image"
+        },
+        {
+          "type": "chart",
+          "bbox": [
+            117,
+            407,
+            469,
+            640
+          ],
+          "blocks": [
+            {
+              "bbox": [
+                142,
+                386,
+                453,
+                401
+              ],
+              "type": "chart_caption",
+              "angle": 0,
+              "lines": [
+                {
+                  "bbox": [
+                    142,
+                    386,
+                    453,
+                    401
+                  ],
+                  "spans": [
+                    {
+                      "bbox": [
+                        142,
+                        386,
+                        453,
+                        401
+                      ],
+                      "type": "text",
+                      "content": "图一：各季度GDP增速（单位：%）数据来源：国家统计局"
+                    }
+                  ]
+                }
+              ],
+              "index": 4
+            },
+            {
+              "bbox": [
+                117,
+                407,
+                469,
+                640
+              ],
+              "type": "chart_body",
+              "angle": 0,
+              "lines": [
+                {
+                  "bbox": [
+                    117,
+                    407,
+                    469,
+                    640
+                  ],
+                  "spans": [
+                    {
+                      "bbox": [
+                        117,
+                        407,
+                        469,
+                        640
+                      ],
+                      "type": "chart",
+                      "content": "| Quarter | Value |\n| --- | --- |\n| 2023Q1 | ~4.5 |\n| 2023Q2 | ~6.3 |\n| 2023Q3 | ~4.9 |\n| 2023Q4 | ~5.2 |\n| 2024Q1 | ~5.3 |\n| 2024Q2 | ~4.7 |\n| 2024Q3 | ~4.6 |\n| 2024Q4 | ~5.4 |\n| 2025Q1 | ~5.4 |\n| 2025Q2 | ~5.2 |\n| 2025Q3 | ~4.8 |",
+                      "image_path": "936dda8a62a4acfa695830dcbffdeaf4454f3efcff6f4a97044402639d2f5f98.jpg"
+                    }
+                  ]
+                }
+              ],
+              "index": 5
+            },
+            {
+              "bbox": [
+                250,
+                648,
+                342,
+                663
+              ],
+              "type": "chart_caption",
+              "angle": 0,
+              "lines": [
+                {
+                  "bbox": [
+                    250,
+                    648,
+                    342,
+                    663
+                  ],
+                  "spans": [
+                    {
+                      "bbox": [
+                        250,
+                        648,
+                        342,
+                        663
+                      ],
+                      "type": "text",
+                      "content": "各季度 GDP 增速"
+                    }
+                  ]
+                }
+              ],
+              "index": 6
+            }
+          ],
+          "index": 5,
+          "sub_type": "line"
+        },
+        {
+          "bbox": [
+            86,
+            670,
+            505,
+            719
+          ],
+          "type": "text",
+          "angle": 0,
+          "lines": [
+            {
+              "bbox": [
+                86,
+                670,
+                505,
+                719
+              ],
+              "spans": [
+                {
+                  "bbox": [
+                    86,
+                    670,
+                    505,
+                    719
+                  ],
+                  "type": "text",
+                  "content": "各品种期货合约的最低交易保证金标准, 以及不同交易时间段执行的交易保证金标准见相关品种期货业务细则。"
+                }
+              ]
+            }
+          ],
+          "index": 7,
+          "merge_prev": false
+        }
+      ],
+      "discarded_blocks": [],
+      "page_size": [
+        595,
+        841
+      ],
+      "page_idx": 1,
+      "para_blocks": [
+        {
+          "bbox": [
+            86,
+            109,
+            223,
+            126
+          ],
+          "type": "title",
+          "angle": 0,
+          "lines": [
+            {
+              "bbox": [
+                86,
+                109,
+                223,
+                126
+              ],
+              "spans": [
+                {
+                  "bbox": [
+                    86,
+                    109,
+                    223,
+                    126
+                  ],
+                  "type": "text",
+                  "content": "第二章 保证金制度"
+                }
+              ]
+            }
+          ],
+          "index": 0,
+          "level": 2
+        },
+        {
+          "bbox": [
+            86,
+            141,
+            298,
+            158
+          ],
+          "type": "text",
+          "angle": 0,
+          "lines": [
+            {
+              "bbox": [
+                86,
+                141,
+                298,
+                158
+              ],
+              "spans": [
+                {
+                  "bbox": [
+                    86,
+                    141,
+                    298,
+                    158
+                  ],
+                  "type": "text",
+                  "content": "第四条 期货交易实行保证金制度。"
+                }
+              ]
+            }
+          ],
+          "index": 1,
+          "merge_prev": false
+        },
+        {
+          "type": "image",
+          "bbox": [
+            163,
+            165,
+            429,
+            365
+          ],
+          "blocks": [
+            {
+              "bbox": [
+                163,
+                165,
+                429,
+                365
+              ],
+              "type": "image_body",
+              "angle": 0,
+              "lines": [
+                {
+                  "bbox": [
+                    163,
+                    165,
+                    429,
+                    365
+                  ],
+                  "spans": [
+                    {
+                      "bbox": [
+                        163,
+                        165,
+                        429,
+                        365
+                      ],
+                      "type": "image",
+                      "content": "Scenic landscape with a vibrant yellow flower field beside a calm blue sea under a partly cloudy sky (no text or symbols visible)",
+                      "image_path": "599234c3b9e0cf99ed63d2cc6e72b045ce7604124aa6b25d414ad8e10112b2e6.jpg"
+                    }
+                  ]
+                }
+              ],
+              "index": 2
+            },
+            {
+              "bbox": [
+                268,
+                367,
+                324,
+                382
+              ],
+              "type": "image_caption",
+              "angle": 0,
+              "lines": [
+                {
+                  "bbox": [
+                    268,
+                    367,
+                    324,
+                    382
+                  ],
+                  "spans": [
+                    {
+                      "bbox": [
+                        268,
+                        367,
+                        324,
+                        382
+                      ],
+                      "type": "text",
+                      "content": "风景图 一"
+                    }
+                  ]
+                }
+              ],
+              "index": 3
+            }
+          ],
+          "index": 2,
+          "sub_type": "natural_image"
+        },
+        {
+          "type": "chart",
+          "bbox": [
+            117,
+            407,
+            469,
+            640
+          ],
+          "blocks": [
+            {
+              "bbox": [
+                142,
+                386,
+                453,
+                401
+              ],
+              "type": "chart_caption",
+              "angle": 0,
+              "lines": [
+                {
+                  "bbox": [
+                    142,
+                    386,
+                    453,
+                    401
+                  ],
+                  "spans": [
+                    {
+                      "bbox": [
+                        142,
+                        386,
+                        453,
+                        401
+                      ],
+                      "type": "text",
+                      "content": "图一：各季度GDP增速（单位：%）数据来源：国家统计局"
+                    }
+                  ]
+                }
+              ],
+              "index": 4
+            },
+            {
+              "bbox": [
+                117,
+                407,
+                469,
+                640
+              ],
+              "type": "chart_body",
+              "angle": 0,
+              "lines": [
+                {
+                  "bbox": [
+                    117,
+                    407,
+                    469,
+                    640
+                  ],
+                  "spans": [
+                    {
+                      "bbox": [
+                        117,
+                        407,
+                        469,
+                        640
+                      ],
+                      "type": "chart",
+                      "content": "| Quarter | Value |\n| --- | --- |\n| 2023Q1 | ~4.5 |\n| 2023Q2 | ~6.3 |\n| 2023Q3 | ~4.9 |\n| 2023Q4 | ~5.2 |\n| 2024Q1 | ~5.3 |\n| 2024Q2 | ~4.7 |\n| 2024Q3 | ~4.6 |\n| 2024Q4 | ~5.4 |\n| 2025Q1 | ~5.4 |\n| 2025Q2 | ~5.2 |\n| 2025Q3 | ~4.8 |",
+                      "image_path": "936dda8a62a4acfa695830dcbffdeaf4454f3efcff6f4a97044402639d2f5f98.jpg"
+                    }
+                  ]
+                }
+              ],
+              "index": 5
+            },
+            {
+              "bbox": [
+                250,
+                648,
+                342,
+                663
+              ],
+              "type": "chart_caption",
+              "angle": 0,
+              "lines": [
+                {
+                  "bbox": [
+                    250,
+                    648,
+                    342,
+                    663
+                  ],
+                  "spans": [
+                    {
+                      "bbox": [
+                        250,
+                        648,
+                        342,
+                        663
+                      ],
+                      "type": "text",
+                      "content": "各季度 GDP 增速"
+                    }
+                  ]
+                }
+              ],
+              "index": 6
+            }
+          ],
+          "index": 5,
+          "sub_type": "line"
+        },
+        {
+          "bbox": [
+            86,
+            670,
+            505,
+            719
+          ],
+          "type": "text",
+          "angle": 0,
+          "lines": [
+            {
+              "bbox": [
+                86,
+                670,
+                505,
+                719
+              ],
+              "spans": [
+                {
+                  "bbox": [
+                    86,
+                    670,
+                    505,
+                    719
+                  ],
+                  "type": "text",
+                  "content": "各品种期货合约的最低交易保证金标准, 以及不同交易时间段执行的交易保证金标准见相关品种期货业务细则。"
+                }
+              ]
+            }
+          ],
+          "index": 7,
+          "merge_prev": false
+        }
+      ]
+    }
+  ],
+  "_backend": "vlm",
+  "_version_name": "3.4.4"
+}

@@ -23,3 +23,6 @@ Thumbs.db
 # Logs
 *.log
 copilot-instructions.md
+
+# Models
+models/

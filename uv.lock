@@ -3057,7 +3057,7 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "fastapi" },
-    { name = "mineru" },
+    { name = "mineru", extra = ["core"] },
     { name = "python-dotenv" },
     { name = "python-multipart" },
     { name = "uvicorn" },
@@ -3066,7 +3066,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "fastapi" },
-    { name = "mineru", editable = "MinerU" },
+    { name = "mineru", extras = ["core"], editable = "MinerU" },
     { name = "python-dotenv" },
     { name = "python-multipart" },
     { name = "uvicorn" },

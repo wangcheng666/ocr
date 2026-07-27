@@ -1,5 +1,6 @@
 """引擎服务 — 文件类型检测、引擎路由、核心解析逻辑"""
 
+import asyncio
 import json
 from enum import Enum
 from typing import Any
