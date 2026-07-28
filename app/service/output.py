@@ -110,8 +110,10 @@ def write_outputs_to_minio(
     f_dump_content_list: bool = False,
     f_dump_middle_json: bool = True,
     f_dump_model_output: bool = True,
+    f_dump_docx: bool = False,
     f_dump_full_page_images: bool = False,
     f_make_md_mode: str | MakeMode = MakeMode.MM_MD,
+    docx_generator: Any | None = None,
 ):
     """
     将解析结果写入 MinIO
@@ -157,6 +159,15 @@ def write_outputs_to_minio(
 
     if f_dump_full_page_images and pdf_bytes is not None:
         save_full_page_images(pdf_bytes, writer)
+
+    if f_dump_docx and file_type == "pdf" and file_info is not None and docx_generator is not None:
+        try:
+            doc = docx_generator.generate(file_info)
+            buf = io.BytesIO()
+            doc.save(buf)
+            writer.write(f"{stem}.docx", buf.getvalue())
+        except Exception as e:
+            logger.error(f"docx 生成失败: {e}")
 
     logger.info(f"Output files written to MinIO: {stem}")
 

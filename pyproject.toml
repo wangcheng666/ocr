@@ -8,6 +8,8 @@ dependencies = [
     "uvicorn",
     "python-multipart",
     "python-dotenv",
+    "latex2mathml>=3.81.0",
+    "mathml2omml>=0.0.2",
 ]
 
 [tool.uv.sources]

@@ -37,6 +37,7 @@ async def parse_document(
     f_dump_middle_json: bool = Form(True),
     f_dump_model_output: bool = Form(True),
     f_dump_full_page_images: bool = Form(True),
+    f_dump_docx: bool = Form(False),
 ):
     """上传文档解析，结果写入 MinIO（原始文档一并保存）"""
     hybrid_opts = parse_hybrid_options(hybrid_options)
@@ -60,6 +61,7 @@ async def parse_document(
             f_dump_middle_json=f_dump_middle_json,
             f_dump_model_output=f_dump_model_output,
             f_dump_full_page_images=f_dump_full_page_images,
+            f_dump_docx=f_dump_docx,
         )
         return JSONResponse(content=result)
     except HTTPException:
@@ -81,6 +83,7 @@ async def parse_from_minio(
     f_dump_middle_json: bool = Form(True),
     f_dump_model_output: bool = Form(True),
     f_dump_full_page_images: bool = Form(True),
+    f_dump_docx: bool = Form(False),
 ):
     """从 MinIO 读取文档并解析，结果写回同一路径"""
     hybrid_opts = parse_hybrid_options(hybrid_options)
@@ -102,6 +105,7 @@ async def parse_from_minio(
             f_dump_middle_json=f_dump_middle_json,
             f_dump_model_output=f_dump_model_output,
             f_dump_full_page_images=f_dump_full_page_images,
+            f_dump_docx=f_dump_docx,
         )
         logger.info(f"MinIO parse complete: {doc_id}/{file_name}")
         return JSONResponse(content=result)

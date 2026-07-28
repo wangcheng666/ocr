@@ -16,6 +16,7 @@ from .output import (
     write_outputs_to_minio,
 )
 from .storage import build_minio_reader, build_minio_writer, generate_download_url
+from app.service.middle_to_docx import DocxGenerator
 from mineru.utils.enum_class import MakeMode
 
 
@@ -41,6 +42,7 @@ async def parse_and_store(
     output_prefix: str,
     f_dump_md: bool = True,
     f_dump_content_list: bool = True,
+    f_dump_docx: bool = False,
     f_dump_middle_json: bool = True,
     f_dump_model_output: bool = True,
     f_dump_full_page_images: bool = True,
@@ -67,6 +69,14 @@ async def parse_and_store(
 
     # ── 写入输出文件到 MinIO ──────────────────────────
     file_writer = build_minio_writer(output_prefix, output_bucket)
+
+    docx_gen = None
+    if f_dump_docx and file_type == "pdf":
+        cut_images_reader = build_minio_reader(
+            os.path.join(output_prefix, MINERU_CUT_IMAGES_DIR), output_bucket,
+        )
+        docx_gen = DocxGenerator(img_reader=cut_images_reader, formula_enable=True, table_enable=True)
+
     write_outputs_to_minio(
         writer=file_writer,
         stem=stem,
@@ -81,6 +91,8 @@ async def parse_and_store(
         f_dump_middle_json=f_dump_middle_json,
         f_dump_model_output=f_dump_model_output,
         f_dump_full_page_images=f_dump_full_page_images,
+        f_dump_docx=f_dump_docx,
+        docx_generator=docx_gen if f_dump_docx else None,
     )
 
     # ── 打包 ZIP ──────────────────────────────────────
