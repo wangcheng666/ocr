@@ -1,0 +1,14 @@
+.git/
+.gitignore
+.gitmodules
+.harness/
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+.env
+tests/
+docs/
+*.md
+*.zip
+*.docx
