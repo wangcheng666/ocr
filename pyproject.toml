@@ -17,3 +17,6 @@ mineru = { workspace = true }
 
 [tool.uv.workspace]
 members = ["MinerU"]
+
+[project.scripts]
+serve = "app.api.server:main"
