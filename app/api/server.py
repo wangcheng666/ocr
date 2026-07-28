@@ -147,8 +147,13 @@ async def parse_from_minio(
 
 # ── 入口 ─────────────────────────────────────────────────
 def main():
+    import os, sys
+    # 确保项目根目录在 sys.path 中，uv run 下也能正确导入 app 模块
+    project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    if project_root not in sys.path:
+        sys.path.insert(0, project_root)
     import uvicorn
-    uvicorn.run("api.server:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("app.api.server:app", host="0.0.0.0", port=8000, reload=True)
 
 
 if __name__ == "__main__":
