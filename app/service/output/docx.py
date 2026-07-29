@@ -384,7 +384,7 @@ class DocxGenerator:
                             logger.error(f"表格解析失败: {e}")
                 path = span.get("image_path", "")
                 if path:
-                    self._write_img(doc, f"cut_images/{path}")
+                    self._write_img(doc, path)
 
     # ── 列表 ──
     def _write_list(self, doc, list_block):

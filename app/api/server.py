@@ -14,9 +14,9 @@ from loguru import logger
 from pydantic import BaseModel
 
 from ..config.settings import MINIO_BUCKET_NAME
-from ..service.engine import EngineType, parse_hybrid_options
+from ..service.engine.core import EngineType, parse_hybrid_options
 from ..service.orchestrator import parse_and_store
-from ..service.storage import build_minio_reader, build_minio_writer
+from ..service.storage.minio import build_minio_reader, build_minio_writer
 
 
 # ── FastAPI 应用 ─────────────────────────────────────────

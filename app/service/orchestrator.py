@@ -8,15 +8,11 @@ from loguru import logger
 
 from ..config.settings import MINERU_CUT_IMAGES_DIR
 from ..models import HybridOptions
-from .engine import EngineType, core_parse, parse_hybrid_options
-from .output import (
-    build_output_file_list,
-    make_md,
-    pack_and_upload_zip,
-    write_outputs_to_minio,
-)
-from .storage import build_minio_reader, build_minio_writer, generate_download_url
-from app.service.middle_to_docx import DocxGenerator
+from .engine.core import EngineType, core_parse, parse_hybrid_options
+from .output.writers import build_output_file_list, pack_and_upload_zip, write_outputs_to_minio
+from .output.render import make_md
+from .storage.minio import build_minio_reader, build_minio_writer, generate_download_url
+from .output.docx import DocxGenerator
 from mineru.utils.enum_class import MakeMode
 
 

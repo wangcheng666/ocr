@@ -1,6 +1,5 @@
-"""引擎服务 — 文件类型检测、引擎路由、核心解析逻辑"""
+"""引擎核心 — 文件类型检测、引擎类型枚举、引擎路由及核心解析流程"""
 
-import asyncio
 import json
 from enum import Enum
 from typing import Any
@@ -8,8 +7,8 @@ from typing import Any
 from fastapi import HTTPException
 from loguru import logger
 
-from ..models import HybridOptions
-from ..config.settings import VLM_BACKEND, VLM_SERVER_URL
+from ...models import HybridOptions
+from ...config.settings import VLM_BACKEND, VLM_SERVER_URL
 
 
 # ── 支持的文件类型 ──────────────────────────────────────

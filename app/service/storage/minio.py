@@ -1,8 +1,10 @@
-"""存储服务 — MinIO S3DataReader / S3DataWriter 工厂"""
+"""MinIO 存储 — S3DataReader / S3DataWriter 工厂及预签名 URL 生成"""
 
+import boto3
+from botocore.config import Config
 from mineru.data.data_reader_writer.s3 import S3DataReader, S3DataWriter
 
-from ..config.settings import (
+from ...config.settings import (
     MINIO_ENDPOINT,
     MINIO_ACCESS_KEY,
     MINIO_SECRET_KEY,
@@ -42,9 +44,6 @@ def build_minio_writer(prefix: str, bucket_name: str) -> S3DataWriter:
 
 def build_minio_client():
     """构建低级别 boto3 S3 客户端，用于 presigned URL 等操作"""
-    import boto3
-    from botocore.config import Config
-
     return boto3.client(
         "s3",
         endpoint_url=f"http://{MINIO_ENDPOINT}",
