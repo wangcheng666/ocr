@@ -1,5 +1,6 @@
 """引擎核心 — 文件类型检测、引擎类型枚举、引擎路由及核心解析流程"""
 
+import asyncio
 import json
 from enum import Enum
 from typing import Any
@@ -104,11 +105,11 @@ def _parse_office(content: bytes, file_type: str, image_writer):
         return office_xlsx_analyze(content, image_writer=image_writer)
 
 
-def _parse_vlm(content: bytes, image_writer):
-    from mineru.backend.vlm.vlm_analyze import doc_analyze as vlm_doc_analyze
+async def _parse_vlm(content: bytes, image_writer):
+    from mineru.backend.vlm.vlm_analyze import aio_doc_analyze as vlm_doc_analyze
 
     logger.info(f"Using VLM engine (backend={VLM_BACKEND}, server_url={VLM_SERVER_URL})")
-    middle_json, model_output = vlm_doc_analyze(
+    middle_json, model_output = await vlm_doc_analyze(
         pdf_bytes=content,
         image_writer=image_writer,
         backend=VLM_BACKEND,
@@ -117,15 +118,15 @@ def _parse_vlm(content: bytes, image_writer):
     return middle_json, model_output
 
 
-def _parse_hybrid(content: bytes, image_writer, opts: HybridOptions):
-    from mineru.backend.hybrid.hybrid_analyze import doc_analyze as hybrid_doc_analyze
+async def _parse_hybrid(content: bytes, image_writer, opts: HybridOptions):
+    from mineru.backend.hybrid.hybrid_analyze import aio_doc_analyze as hybrid_doc_analyze
 
     logger.info(
         f"Using Hybrid engine (backend={VLM_BACKEND}, server_url={VLM_SERVER_URL}, "
         f"parse_method={opts.parse_method}, inline_formula={opts.inline_formula_enable}, "
         f"effort={opts.effort})"
     )
-    middle_json, model_output = hybrid_doc_analyze(
+    middle_json, model_output = await hybrid_doc_analyze(
         pdf_bytes=content,
         image_writer=image_writer,
         backend=VLM_BACKEND,
@@ -137,22 +138,8 @@ def _parse_hybrid(content: bytes, image_writer, opts: HybridOptions):
     return middle_json, model_output
 
 
-def parse_with_engine(content: bytes, file_type: str, image_writer, hybrid_opts: HybridOptions | None = None):
-    """按文件类型路由到对应引擎（供 ocr_router 等外部使用）"""
-    if file_type == "docx":
-        return _parse_office(content, file_type, image_writer)
-    elif file_type == "pptx":
-        return _parse_office(content, file_type, image_writer)
-    elif file_type == "xlsx":
-        return _parse_office(content, file_type, image_writer)
-    elif file_type == "vlm":
-        return _parse_vlm(content, image_writer)
-    else:
-        return _parse_hybrid(content, image_writer, hybrid_opts or HybridOptions())
-
-
 # ── 核心解析流程 ─────────────────────────────────────────
-def core_parse(
+async def core_parse(
     content: bytes,
     file_name: str,
     engine: EngineType,
@@ -160,7 +147,11 @@ def core_parse(
     image_writer,
 ) -> tuple[dict, Any, str]:
     """
-    统一的核心解析流程：检测类型 → 校验引擎 → 路由到引擎
+    统一的核心解析流程：检测类型 → 校验引擎 → 路由到引擎（异步）
+
+    hybrid/vlm 直接 await MinerU 的 aio_doc_analyze；
+    office 引擎 MinerU 暂无异步版本，保持在线程池执行。
+
     返回 (middle_json, model_output, file_type)
     """
     from mineru.utils.guess_suffix_or_lang import guess_suffix_by_bytes
@@ -196,10 +187,10 @@ def core_parse(
         )
 
     if engine == EngineType.office:
-        middle_json, model_output = _parse_office(content, file_type, image_writer)
+        middle_json, model_output = await asyncio.to_thread(_parse_office, content, file_type, image_writer)
     elif engine == EngineType.vlm:
-        middle_json, model_output = _parse_vlm(content, image_writer)
+        middle_json, model_output = await _parse_vlm(content, image_writer)
     else:
-        middle_json, model_output = _parse_hybrid(content, image_writer, hybrid_opts)
+        middle_json, model_output = await _parse_hybrid(content, image_writer, hybrid_opts)
 
     return middle_json, model_output, file_type

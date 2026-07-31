@@ -1,14 +1,38 @@
+# Git
 .git/
 .gitignore
 .gitmodules
+.gitattributes
+
+# 开发 / CI
 .harness/
+.vscode/
+
+# Python
 .venv/
 __pycache__/
 *.pyc
 *.pyo
+
+# 环境变量（敏感信息）
 .env
+
+# 文档 / 测试
 tests/
 docs/
+notebooks/
+
+# 文档模板
 *.md
 *.zip
 *.docx
+*.pptx
+*.xlsx
+*.pdf
+
+# 构建脚本（无需进入镜像）
+build.sh
+.build/
+Dockerfile
+.dockerignore
+scripts/

@@ -7,7 +7,6 @@ from .core import (
     classify_file_type,
     core_parse,
     parse_hybrid_options,
-    parse_with_engine,
     suggest_engine,
 )
 
@@ -18,6 +17,5 @@ __all__ = [
     "classify_file_type",
     "suggest_engine",
     "parse_hybrid_options",
-    "parse_with_engine",
     "core_parse",
 ]

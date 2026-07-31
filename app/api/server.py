@@ -1,5 +1,4 @@
 """MinerU Custom API Server — Controller"""
-
 import uuid
 from pathlib import Path
 from typing import Optional
@@ -16,7 +15,7 @@ from pydantic import BaseModel
 from ..config.settings import MINIO_BUCKET_NAME
 from ..service.engine.core import EngineType, parse_hybrid_options
 from ..service.orchestrator import parse_and_store
-from ..service.storage.minio import build_minio_reader, build_minio_writer
+from ..service.storage.minio import build_async_minio_reader, build_async_minio_writer
 
 
 # ── FastAPI 应用 ─────────────────────────────────────────
@@ -73,8 +72,8 @@ async def parse_document(
     file_name = file.filename or f"unnamed_{uuid.uuid4().hex}"
     output_prefix = uuid.uuid4().hex
 
-    # 先上传原始文档到 MinIO，与后续结果在同一路径
-    build_minio_writer(output_prefix, MINIO_BUCKET_NAME).write(file_name, content)
+    # 先上传原始文档到 MinIO，与后续结果在同一路径（异步，不阻塞事件循环）
+    await build_async_minio_writer(output_prefix, MINIO_BUCKET_NAME).write(file_name, content)
 
     try:
         result = await parse_and_store(
@@ -122,8 +121,13 @@ async def parse_from_minio(
     f_dump_full_page_images: bool = Form(True, description="是否保存 PDF 每页全页图片"),
     f_dump_docx: bool = Form(False, description="[仅 PDF] 是否生成 Word 文档（.docx）"),
 ):
+    hybrid_opts = parse_hybrid_options(hybrid_options)
 
     try:
+        # 从 MinIO 读取原始文件内容（bucket_name/doc_id/file_name，异步）
+        reader = build_async_minio_reader(doc_id, bucket_name)
+        content = await reader.read(file_name)
+
         result = await parse_and_store(
             content=content,
             file_name=file_name,

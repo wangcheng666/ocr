@@ -1,4 +1,4 @@
-"""编排服务 — 解析 + 存储 + 打包的完整流程"""
+"""编排服务 — 解析 + 存储 + 打包的完整流程（异步）"""
 
 import asyncio
 import copy
@@ -11,7 +11,13 @@ from ..models import HybridOptions
 from .engine.core import EngineType, core_parse, parse_hybrid_options
 from .output.writers import build_output_file_list, pack_and_upload_zip, write_outputs_to_minio
 from .output.render import make_md
-from .storage.minio import build_minio_reader, build_minio_writer, generate_download_url
+from .storage.minio import (
+    agenerate_download_url,
+    build_async_minio_reader,
+    build_async_minio_writer,
+    build_minio_reader,
+    build_minio_writer,
+)
 from .output.docx import DocxGenerator
 from mineru.utils.enum_class import MakeMode
 
@@ -43,18 +49,24 @@ async def parse_and_store(
     f_dump_model_output: bool = True,
     f_dump_full_page_images: bool = True,
 ) -> dict:
-    """解析文档并将结果写入 MinIO，返回响应数据"""
+    """解析文档并将结果写入 MinIO，返回响应数据（异步，事件循环不阻塞）。"""
     stem = ".".join(file_name.split(".")[:-1]) or file_name
 
+    # hybrid/vlm 直接 await MinerU 的 aio_doc_analyze；
+    # office 引擎无异步版，内部走 to_thread。
+    # image_writer 保持同步（MinerU 异步版内部同步调用 image_writer.write）
     image_writer = build_minio_writer(
         os.path.join(output_prefix, MINERU_CUT_IMAGES_DIR), output_bucket,
     )
 
-    middle_json, model_output, file_type = await asyncio.to_thread(
-        core_parse, content, file_name, engine, hybrid_opts, image_writer,
+    middle_json, model_output, file_type = await core_parse(
+        content, file_name, engine, hybrid_opts, image_writer,
     )
 
-    md_content = make_md(file_type, middle_json.get("pdf_info", []), MakeMode.MM_MD)
+    # Markdown 渲染（CPU 密集 → 线程池）
+    md_content = await asyncio.to_thread(
+        make_md, file_type, middle_json.get("pdf_info", []), MakeMode.MM_MD,
+    )
 
     # ── 深拷贝 middle_json，修正 image_path 用于写入 middle.json ──
     # 引擎只存了文件名（abc.jpg），缺少 cut_images/ 前缀
@@ -63,17 +75,18 @@ async def parse_and_store(
     middle_json_for_write = copy.deepcopy(middle_json)
     _fix_image_paths(middle_json_for_write, MINERU_CUT_IMAGES_DIR)
 
-    # ── 写入输出文件到 MinIO ──────────────────────────
-    file_writer = build_minio_writer(output_prefix, output_bucket)
+    # ── 写入输出文件到 MinIO（异步 writer，await 不阻塞）──────────
+    file_writer = build_async_minio_writer(output_prefix, output_bucket)
 
     docx_gen = None
     if f_dump_docx and file_type == "pdf":
+        # docx 生成在 to_thread 内执行，可用同步 reader 读裁剪图
         cut_images_reader = build_minio_reader(
             os.path.join(output_prefix, MINERU_CUT_IMAGES_DIR), output_bucket,
         )
         docx_gen = DocxGenerator(img_reader=cut_images_reader, formula_enable=True, table_enable=True)
 
-    write_outputs_to_minio(
+    await write_outputs_to_minio(
         writer=file_writer,
         stem=stem,
         file_type=file_type,
@@ -91,17 +104,17 @@ async def parse_and_store(
         docx_generator=docx_gen if f_dump_docx else None,
     )
 
-    # ── 打包 ZIP ──────────────────────────────────────
-    files = build_output_file_list(bucket=output_bucket, prefix=output_prefix)
-    zip_name = pack_and_upload_zip(
-        reader=build_minio_reader(output_prefix, output_bucket),
+    # ── 打包 ZIP（异步）──────────────────────────────
+    files = await build_output_file_list(bucket=output_bucket, prefix=output_prefix)
+    zip_name = await pack_and_upload_zip(
+        reader=build_async_minio_reader(output_prefix, output_bucket),
         writer=file_writer,
         prefix=output_prefix,
         stem=stem,
         files=files,
     )
 
-    download_url = generate_download_url(
+    download_url = await agenerate_download_url(
         bucket=output_bucket,
         key=f"{output_prefix}/{zip_name}",
     )

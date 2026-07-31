@@ -18,3 +18,15 @@ mineru = { workspace = true }
 
 [tool.uv.workspace]
 members = ["MinerU"]
+
+# ── 内网依赖源配置 ────────────────────────────────────────
+# 1. 本地 packages/ 目录（存放内部镜像没有的 wheel，优先级最高）
+# 2. 内网 PyPI 镜像（主要依赖来源）
+# uv lock 时会按顺序查找，找不到的包会自动回退到官方 PyPI
+[[tool.uv.index]]
+name = "local"
+url = "./packages/"
+format = "flat"
+
+[[tool.uv.index]]
+url = "http://10.251.166.248:8081/repository/pypi-group/simple"
