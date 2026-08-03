@@ -79,10 +79,15 @@ def write_outputs_to_minio(
 
     if f_dump_docx and file_type == "pdf" and file_info is not None and docx_generator is not None:
         try:
-            doc = docx_generator.generate(file_info)
-            buf = io.BytesIO()
-            doc.save(buf)
-            writer.write(f"{stem}.docx", buf.getvalue())
+            # docx 双写：标准版（公式渲染为 OMML）+ 原始公式版（LaTeX 原文）
+            docs = [
+                ("", docx_generator.generate(file_info)),
+                ("_with_raw_formula", docx_generator.generate_with_raw_formula(file_info)),
+            ]
+            for suffix, doc in docs:
+                buf = io.BytesIO()
+                doc.save(buf)
+                writer.write(f"{stem}{suffix}.docx", buf.getvalue())
         except Exception as e:
             logger.error(f"docx 生成失败: {e}")
 

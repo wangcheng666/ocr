@@ -86,11 +86,22 @@ async def write_outputs_to_minio(
 
     if f_dump_docx and file_type == "pdf" and file_info is not None and docx_generator is not None:
         try:
-            # docx 生成：CPU 密集 + 内部读图（同步 I/O），整体放线程池
-            doc = await asyncio.to_thread(docx_generator.generate, file_info)
-            buf = io.BytesIO()
-            doc.save(buf)
-            await writer.write(f"{stem}.docx", buf.getvalue())
+            # docx 双写：标准版（公式渲染为 OMML）+ 原始公式版（LaTeX 原文）。
+            # CPU 密集 + 内部读图（同步 I/O），整体放线程池
+            def _gen() -> list[tuple[str, bytes]]:
+                docs = [
+                    ("", docx_generator.generate(file_info)),
+                    ("_with_raw_formula", docx_generator.generate_with_raw_formula(file_info)),
+                ]
+                out: list[tuple[str, bytes]] = []
+                for suffix, doc in docs:
+                    buf = io.BytesIO()
+                    doc.save(buf)
+                    out.append((suffix, buf.getvalue()))
+                return out
+
+            for suffix, data in await asyncio.to_thread(_gen):
+                await writer.write(f"{stem}{suffix}.docx", data)
         except Exception as e:
             logger.error(f"docx 生成失败: {e}")
 

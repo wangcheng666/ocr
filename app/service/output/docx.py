@@ -23,7 +23,7 @@ from docx.shared import Inches, Pt, RGBColor
 from docx.table import _Cell
 from loguru import logger
 from lxml import etree
-from mineru.data.data_reader_writer.base import DataReader, DataWriter
+from mineru.data.data_reader_writer.base import DataReader
 from mineru.utils.enum_class import BlockType, ContentType
 
 # ──────────────────────────────────────────────
@@ -432,6 +432,15 @@ class DocxGenerator:
                     new_para = True
         return document
 
+    def generate_with_raw_formula(self, pdf_info_dict) -> DocumemtObject:
+        """生成「原始公式版」docx：process_formula=False，公式以 LaTeX 原文输出（不转 OMML）。"""
+        return DocxGenerator(
+            img_reader=self.img_reader,
+            formula_enable=self.formula_enable,
+            process_formula=False,
+            table_enable=self.table_enable,
+        ).generate(pdf_info_dict)
+
 
 # ──────────────────────────────────────────────
 # 辅助函数
@@ -453,29 +462,3 @@ def _is_paragraph_cross_page(doc) -> bool:
 def _get_title_level(block) -> int:
     """获取标题等级（python-docx 支持 1-9）。"""
     return max(block.get("level", 1), 0)
-
-
-def to_docx(
-    img_reader: DataReader,
-    file_writer: DataWriter,
-    file_name: str,
-    pdf_info_dict,
-    formula_enable: bool = True,
-    table_enable: bool = True,
-    f_dump_docx: bool = True,
-):
-    """将中间结果转换为 docx 并写入 S3。"""
-    if not f_dump_docx:
-        logger.info("f_dump_docx=False，跳过 docx 生成")
-        return
-    for suffix, pf in [("", True), ("_with_raw_formula", False)]:
-        gen = DocxGenerator(
-            img_reader=img_reader,
-            formula_enable=formula_enable,
-            process_formula=pf,
-            table_enable=table_enable,
-        )
-        doc = gen.generate(pdf_info_dict)
-        buf = io.BytesIO()
-        doc.save(buf)
-        file_writer.write(f"{file_name}{suffix}.docx", data=buf.getvalue())
