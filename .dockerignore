@@ -36,3 +36,6 @@ build.sh
 Dockerfile
 .dockerignore
 scripts/
+
+# 资源（configs + models 均不打进镜像，运行期由宿主机 ./resources 挂载到 /app/resources）
+resources/

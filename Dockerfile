@@ -82,8 +82,7 @@ COPY --from=builder /app/.venv /app/.venv
 # 复制运行时所需的应用代码
 COPY app/ /app/app/
 
-# 模型目录挂载点
-VOLUME /app/models
+# 资源（configs + models）不打进镜像，运行期由宿主机 ./resources 挂载到 /app/resources
 
 EXPOSE 8000
 

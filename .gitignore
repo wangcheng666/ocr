@@ -24,8 +24,8 @@ Thumbs.db
 *.log
 copilot-instructions.md
 
-# Models
-models/
+# resources（挂载资源，不入库）
+resources
 
 packages
 .docker

@@ -1,0 +1,52 @@
+# ======================================================================
+# OCR 服务 Docker Compose（宿主机部署用）
+# 镜像: ocr-server:0.4.0
+#
+# 用法（在宿主机上，cd 到本目录）:
+#   1. 导入镜像:  docker load < ocr-server-0.4.0.tar
+#   2. 启动:      docker compose up -d
+#   3. 检查:      curl http://127.0.0.1:8000/health
+#   4. 停止:      docker compose down
+#
+# 依赖的外部服务（已有，无需在本文件定义）:
+#   - MinIO: MINIO_ENDPOINT / MINIO_BUCKET_NAME
+#   - VLM:   VLM_SERVER_URL
+# 敏感凭据（MINIO_ACCESS_KEY / MINIO_SECRET_KEY）从宿主机环境或本目录 .env 读取
+# ======================================================================
+services:
+  ocr:
+    image: ocr-server:0.4.0
+    container_name: ocr-server
+    ports:
+      - "8000:8000"
+    environment:
+      # MinerU 配置（镜像内固定路径）
+      MINERU_TOOLS_CONFIG_JSON: /app/resources/configs/mineru.json
+      MINERU_MODEL_SOURCE: local
+      MINERU_CUT_IMAGES_DIR: cut_images
+
+      # VLM 推理后端
+      VLM_BACKEND: http-client
+      VLM_SERVER_URL: http://10.251.146.132:8021
+
+      # MinIO 存储
+      MINIO_ENDPOINT: 10.251.146.131:9000
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+      MINIO_BUCKET_NAME: ocr-tmp
+
+    volumes:
+      # 资源目录挂载：宿主机 resources/（configs + models）→ 容器 /app/resources
+      # mineru.json 的 "resources/models/pipeline" 相对路径在容器内按工作目录 /app 解析，
+      # 即 /app/resources/models/pipeline，宿主机的 resources/models/ 需含 pipeline/ 子目录
+      - ./resources:/app/resources
+
+    healthcheck:
+      test: ["CMD", "python3", "-c",
+             "import urllib.request,sys; r=urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=5); sys.exit(0 if r.status==200 else 1)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+    restart: unless-stopped

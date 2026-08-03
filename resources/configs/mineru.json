@@ -30,7 +30,7 @@
         }
     },
     "models-dir": {
-        "pipeline": "models/pipeline",
+        "pipeline": "resources/models/pipeline",
         "vlm": ""
     },
     "model-source": "local",
