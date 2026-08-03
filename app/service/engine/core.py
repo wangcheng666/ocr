@@ -61,7 +61,7 @@ ENGINE_LABELS: dict[EngineType, str] = {
 def suggest_engine(file_type: str) -> str:
     if file_type in {"docx", "pptx", "xlsx"}:
         return "office"
-    return "hybrid（默认）或 vlm"
+    return "vlm（默认）或 hybrid"
 
 
 # ── Hybrid 扩展参数解析 ─────────────────────────────────
@@ -149,8 +149,8 @@ async def core_parse(
     """
     统一的核心解析流程：检测类型 → 校验引擎 → 路由到引擎（异步）
 
-    hybrid/vlm 直接 await MinerU 的 aio_doc_analyze；
-    office 引擎 MinerU 暂无异步版本，保持在线程池执行。
+    - hybrid / vlm：await MinerU 的 aio_doc_analyze（异步版）
+    - office：MinerU 无异步版本，走线程池
 
     返回 (middle_json, model_output, file_type)
     """
@@ -184,6 +184,16 @@ async def core_parse(
                 f"Supported types: {', '.join(sorted(supported))}. "
                 f"Suggested engine: {suggest_engine(file_type)}"
             ),
+        )
+
+    # vlm / hybrid 引擎基于 PDFium 渲染 PDF，需先把图片字节转为 PDF 字节
+    # （与 MinerU 标准 CLI read_fn 行为一致）
+    if file_type == "image" and engine != EngineType.office:
+        from mineru.utils.pdf_image_tools import images_bytes_to_pdf_bytes
+
+        content = images_bytes_to_pdf_bytes(content)
+        logger.info(
+            f"Converted image to PDF bytes ({len(content)} bytes) for {engine.value} engine"
         )
 
     if engine == EngineType.office:

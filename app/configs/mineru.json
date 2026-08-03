@@ -30,7 +30,7 @@
         }
     },
     "models-dir": {
-        "pipeline": "/home/czce/Documents/code/python/ocr/models/pipeline",
+        "pipeline": "models/pipeline",
         "vlm": ""
     },
     "model-source": "local",

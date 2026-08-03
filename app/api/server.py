@@ -46,8 +46,8 @@ async def health():
     description="""上传文件并解析，结果写入 MinIO，返回 ZIP 下载链接。
 
 **支持的引擎：**
-- `hybrid` — 布局分析 + VLM + OCR（推荐，支持 PDF / 图片）
-- `vlm` — 纯视觉大模型（支持 PDF / 图片）
+- `vlm` — 纯视觉大模型（默认，支持 PDF / 图片）
+- `hybrid` — 布局分析 + VLM + OCR（支持 PDF / 图片）
 - `office` — 原生 Office 解析（支持 docx / pptx / xlsx）
 
 **输出控制参数：**
@@ -58,7 +58,7 @@ Markdown 和 content_list 默认生成。
 )
 async def parse_document(
     file: UploadFile = File(..., description="待解析的文件（PDF / 图片 / docx / pptx / xlsx）"),
-    engine: EngineType = Form(EngineType.hybrid, description="解析引擎：hybrid / vlm / office"),
+    engine: EngineType = Form(EngineType.vlm, description="解析引擎：vlm（默认）/ hybrid / office"),
     hybrid_options: Optional[str] = Form(None, description="hybrid 引擎的 VLM 配置参数（JSON 字符串）"),
     f_dump_md: bool = Form(True, description="是否生成 Markdown"),
     f_dump_content_list: bool = Form(True, description="是否生成 content_list JSON"),
@@ -112,7 +112,7 @@ async def parse_from_minio(
     doc_id: str = Form(..., description="MinIO 路径前缀（目录名 / UUID）"),
     file_name: str = Form(..., description="文件名，需与 doc_id 拼接后存在于 MinIO 中"),
     bucket_name: str = Form(..., description="MinIO Bucket 名称"),
-    engine: EngineType = Form(EngineType.hybrid, description="解析引擎：hybrid / vlm / office"),
+    engine: EngineType = Form(EngineType.vlm, description="解析引擎：vlm（默认）/ hybrid / office"),
     hybrid_options: Optional[str] = Form(None, description="hybrid 引擎的 VLM 配置参数（JSON 字符串）"),
     f_dump_md: bool = Form(True, description="是否生成 Markdown"),
     f_dump_content_list: bool = Form(True, description="是否生成 content_list JSON"),
@@ -151,13 +151,18 @@ async def parse_from_minio(
 
 # ── 入口 ─────────────────────────────────────────────────
 def main():
-    import os, sys
+    import argparse, os, sys
     # 确保项目根目录在 sys.path 中，uv run 下也能正确导入 app 模块
     project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     if project_root not in sys.path:
         sys.path.insert(0, project_root)
+    parser = argparse.ArgumentParser(description="启动 OCR 解析服务")
+    parser.add_argument("--host", default="0.0.0.0", help="监听地址（默认 0.0.0.0）")
+    parser.add_argument("--port", type=int, default=8000, help="监听端口（默认 8000）")
+    parser.add_argument("--no-reload", action="store_true", help="关闭开发热重载（默认开启）")
+    args = parser.parse_args()
     import uvicorn
-    uvicorn.run("app.api.server:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("app.api.server:app", host=args.host, port=args.port, reload=not args.no_reload)
 
 
 if __name__ == "__main__":
