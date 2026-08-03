@@ -1,36 +1,36 @@
 # ======================================================================
-# 多平台基础镜像参数（由 build-docker.sh 按架构传入）
-#   amd64: BASE_IMAGE=python:3.13-slim  UV_IMAGE=ghcr.io/astral-sh/uv:0.7.13
-#   arm64: BASE_IMAGE=python:3.13-slim-arm64  UV_IMAGE=ghcr.io/astral-sh/uv:0.7.13-arm64
+# 多平台 Dockerfile（参考 czce-ai-platform）
+# 基础镜像选择放在 Dockerfile 内部：构建时仅需传入 --build-arg TARGETARCH=amd64|arm64
+#   amd64: python:3.13-slim-ocr        + uv:0.7.13
+#   arm64: python:3.13-slim-ocr-arm64  + uv:0.7.13-arm64
+# 基础镜像为预烤镜像（已含系统依赖+字体），构建完全离线
+# 新增架构只需在此处增加对应的命名阶段，无需改动构建脚本
 # ======================================================================
-ARG BASE_IMAGE=python:3.13-slim
-ARG UV_IMAGE=ghcr.io/astral-sh/uv:0.7.13
+ARG TARGETARCH=amd64
 
-# uv 工具阶段（多平台按架构选择 uv 镜像；用命名阶段让 COPY --from 引用静态阶段名）
-FROM ${UV_IMAGE} AS uv-stage
+# 架构对应的 Python 基础镜像（命名阶段，由 TARGETARCH 选择）
+# 使用预烤镜像 python:3.13-slim-ocr{-arm64}（已含系统依赖+字体），构建完全离线
+FROM python:3.13-slim-ocr AS python-base-amd64
+FROM python:3.13-slim-ocr-arm64 AS python-base-arm64
+FROM python-base-${TARGETARCH} AS python-base
+
+# uv 工具镜像（按架构选择；用命名阶段让 COPY --from 引用静态阶段名）
+FROM ghcr.io/astral-sh/uv:0.7.13 AS uv-bin-amd64
+FROM ghcr.io/astral-sh/uv:0.7.13-arm64 AS uv-bin-arm64
+FROM uv-bin-${TARGETARCH} AS uv-bin
 
 # ======================================================================
 # 阶段 1: BUILDER — 安装 Python 依赖（含 MinerU workspace member）
 # ======================================================================
-FROM ${BASE_IMAGE} AS builder
+FROM python-base AS builder
 
-# 从 uv 阶段复制 uv/uvx（多平台按架构选择 uv 镜像）
-COPY --from=uv-stage /uv /uvx /bin/
+ARG TARGETARCH
+
+# 从 uv 阶段复制 uv/uvx（按架构选择）
+COPY --from=uv-bin /uv /uvx /bin/
 
 # pip 配置（内网源，作为 uv 的补充）
 COPY .docker/.pip /root/.pip
-
-# 系统依赖（用于 opencv、字体等运行时）
-# 使用阿里云 HTTP 镜像源（内网环境 HTTPS 被中间人代理拦截，HTTP 可用）
-RUN sed -i 's|http://deb.debian.org|http://mirrors.aliyun.com|g' /etc/apt/sources.list.d/debian.sources 2>/dev/null; \
-    sed -i 's|http://deb.debian.org|http://mirrors.aliyun.com|g' /etc/apt/sources.list 2>/dev/null; \
-    apt-get update 2>/dev/null || true; \
-    apt-get install -y --no-install-recommends \
-    libgl1 libglib2.0-0 \
-    fonts-noto-core fonts-noto-cjk fontconfig \
-    || echo "apt install skipped (network unavailable)"; \
-    fc-cache -fv 2>/dev/null || true; \
-    rm -rf /var/lib/apt/lists/* 2>/dev/null; true
 
 WORKDIR /app
 
@@ -43,9 +43,10 @@ COPY packages/ /app/packages/
 
 # 安装外部依赖（跳过 workspace member，安装为非 editable）
 # --locked: 使用 uv.lock 中锁定的版本
-# --find-links: 从 packages/ 找 wheel（离线构建）
-# 多平台: 基础镜像和 uv 均为 multi-arch，--platform 支持 amd64/arm64
-RUN uv sync --locked --no-install-project --no-editable \
+# --offline: 强制离线（lock 已指向本地 packages/，见 docs/离线构建操作文档.md）
+# --find-links: 从 packages/ 找 wheel
+# 多平台: 基础镜像和 uv 均为 multi-arch，同一份锁覆盖 amd64/arm64
+RUN uv sync --locked --offline --no-install-project --no-editable \
     --find-links /app/packages/
 
 # ── 第 2 层：复制 MinerU 源码，安装 workspace member ──
@@ -53,14 +54,14 @@ RUN uv sync --locked --no-install-project --no-editable \
 #   uv 可能缓存了残缺 wheel；此处复制完整源码后必须强制重装）
 COPY MinerU/mineru/ /app/MinerU/mineru/
 COPY MinerU/LICENSE.md /app/MinerU/LICENSE.md
-RUN uv sync --locked --no-editable \
+RUN uv sync --locked --offline --no-editable \
     --reinstall-package mineru \
     --find-links /app/packages/
 
 # ======================================================================
 # 阶段 2: FINAL — 仅包含运行时所需的文件
 # ======================================================================
-FROM ${BASE_IMAGE}
+FROM python-base
 
 # 构建参数
 ARG VERSION
@@ -72,21 +73,6 @@ ENV APP_VERSION=${VERSION} \
     PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     UVICORN_WORKERS=1
-
-# 系统依赖（运行时必需）
-# opencv-python(GUI版) 需要 X11 库: libxcb / libx11 / libxext 等
-# 使用阿里云 HTTP 镜像源（内网环境 HTTPS 被中间人代理拦截，HTTP 可用）
-RUN sed -i 's|http://deb.debian.org|http://mirrors.aliyun.com|g' /etc/apt/sources.list.d/debian.sources 2>/dev/null; \
-    sed -i 's|http://deb.debian.org|http://mirrors.aliyun.com|g' /etc/apt/sources.list 2>/dev/null; \
-    apt-get update 2>/dev/null || true; \
-    apt-get install -y --no-install-recommends \
-    libgl1 libglib2.0-0 \
-    libxcb1 libx11-6 libxext6 \
-    libxrender1 libxi6 libxtst6 libxfixes3 libxrandr2 \
-    fonts-noto-core fonts-noto-cjk fontconfig \
-    || echo "apt install skipped (network unavailable)"; \
-    fc-cache -fv 2>/dev/null || true; \
-    rm -rf /var/lib/apt/lists/* 2>/dev/null; true
 
 WORKDIR /app
 
