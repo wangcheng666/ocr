@@ -84,7 +84,7 @@ async def write_outputs_to_minio(
     if f_dump_full_page_images and pdf_bytes is not None:
         await save_full_page_images(pdf_bytes, writer)
 
-    if f_dump_docx and file_type == "pdf" and file_info is not None and docx_generator is not None:
+    if f_dump_docx and file_type in ("pdf", "image") and file_info is not None and docx_generator is not None:
         try:
             # docx 双写：标准版（公式渲染为 OMML）+ 原始公式版（LaTeX 原文）。
             # CPU 密集 + 内部读图（同步 I/O），整体放线程池

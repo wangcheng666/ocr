@@ -79,7 +79,7 @@ async def parse_and_store(
     file_writer = build_async_minio_writer(output_prefix, output_bucket)
 
     docx_gen = None
-    if f_dump_docx and file_type == "pdf":
+    if f_dump_docx and file_type in ("pdf", "image"):
         # docx 生成在 to_thread 内执行，可用同步 reader 读裁剪图
         cut_images_reader = build_minio_reader(
             os.path.join(output_prefix, MINERU_CUT_IMAGES_DIR), output_bucket,
