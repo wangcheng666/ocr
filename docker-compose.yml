@@ -5,7 +5,7 @@
 # 用法（在宿主机上，cd 到本目录）:
 #   1. 导入镜像:  docker load < ocr-server-0.4.0.tar
 #   2. 启动:      docker compose up -d
-#   3. 检查:      curl http://127.0.0.1:8000/health
+#   3. 检查:      curl http://127.0.0.1:80/health
 #   4. 停止:      docker compose down
 #
 # 依赖的外部服务（已有，无需在本文件定义）:
@@ -18,7 +18,7 @@ services:
     image: ocr-server:0.4.0
     container_name: ocr-server
     ports:
-      - "8000:8000"
+      - "80:80"
     environment:
       # MinerU 配置（镜像内固定路径）
       MINERU_TOOLS_CONFIG_JSON: /app/resources/configs/mineru.json
@@ -43,7 +43,7 @@ services:
 
     healthcheck:
       test: ["CMD", "python3", "-c",
-             "import urllib.request,sys; r=urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=5); sys.exit(0 if r.status==200 else 1)"]
+             "import urllib.request,sys; r=urllib.request.urlopen('http://127.0.0.1:80/health', timeout=5); sys.exit(0 if r.status==200 else 1)"]
       interval: 30s
       timeout: 10s
       retries: 3

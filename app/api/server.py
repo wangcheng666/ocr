@@ -158,7 +158,7 @@ def main():
         sys.path.insert(0, project_root)
     parser = argparse.ArgumentParser(description="启动 OCR 解析服务")
     parser.add_argument("--host", default="0.0.0.0", help="监听地址（默认 0.0.0.0）")
-    parser.add_argument("--port", type=int, default=8000, help="监听端口（默认 8000）")
+    parser.add_argument("--port", type=int, default=80, help="监听端口（默认 80）")
     parser.add_argument("--no-reload", action="store_true", help="关闭开发热重载（默认开启）")
     args = parser.parse_args()
     import uvicorn

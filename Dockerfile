@@ -84,6 +84,6 @@ COPY app/ /app/app/
 
 # 资源（configs + models）不打进镜像，运行期由宿主机 ./resources 挂载到 /app/resources
 
-EXPOSE 8000
+EXPOSE 80
 
-CMD ["/bin/bash", "-c", "source .venv/bin/activate && exec uvicorn app.api.server:app --host 0.0.0.0 --port 8000 --workers ${UVICORN_WORKERS}"]
+CMD ["/bin/bash", "-c", "source .venv/bin/activate && exec uvicorn app.api.server:app --host 0.0.0.0 --port 80 --workers ${UVICORN_WORKERS}"]
