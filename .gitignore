@@ -29,3 +29,4 @@ resources
 
 packages
 .docker
+tests
