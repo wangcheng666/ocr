@@ -8,7 +8,7 @@ from loguru import logger
 
 from ..config.settings import MINERU_CUT_IMAGES_DIR
 from ..models import HybridOptions
-from .engine.core import EngineType, core_parse, parse_hybrid_options
+from .engine.core import EngineType, classify_file_type, core_parse, parse_hybrid_options
 from .output.writers import build_output_file_list, pack_and_upload_zip, write_outputs_to_minio
 from .output.render import make_md
 from .storage.minio import (
@@ -20,6 +20,8 @@ from .storage.minio import (
 )
 from .output.docx import DocxGenerator
 from mineru.utils.enum_class import MakeMode
+from mineru.utils.guess_suffix_or_lang import guess_suffix_by_bytes
+from mineru.utils.pdf_image_tools import images_bytes_to_pdf_bytes
 
 
 def _fix_image_paths(obj, prefix: str) -> None:
@@ -52,6 +54,14 @@ async def parse_and_store(
     """解析文档并将结果写入 MinIO，返回响应数据（异步，事件循环不阻塞）。"""
     stem = ".".join(file_name.split(".")[:-1]) or file_name
 
+    # 图片统一先转成 PDF，后续（引擎解析 / 整页图 / docx / middle.json）
+    # 全部按 pdf 流程处理，下游无需再区分 image 类型。
+    if classify_file_type(guess_suffix_by_bytes(content)) == "image":
+        content = images_bytes_to_pdf_bytes(content)
+        logger.info(
+            f"Converted image to PDF bytes ({len(content)} bytes) for {file_name}"
+        )
+
     # hybrid/vlm 直接 await MinerU 的 aio_doc_analyze；
     # office 引擎无异步版，内部走 to_thread。
     # image_writer 保持同步（MinerU 异步版内部同步调用 image_writer.write）
@@ -79,7 +89,7 @@ async def parse_and_store(
     file_writer = build_async_minio_writer(output_prefix, output_bucket)
 
     docx_gen = None
-    if f_dump_docx and file_type in ("pdf", "image"):
+    if f_dump_docx and file_type == "pdf":
         # docx 生成在 to_thread 内执行，可用同步 reader 读裁剪图
         cut_images_reader = build_minio_reader(
             os.path.join(output_prefix, MINERU_CUT_IMAGES_DIR), output_bucket,
@@ -94,7 +104,7 @@ async def parse_and_store(
         model_output=model_output,
         file_info=middle_json.get("pdf_info"),  # 渲染 md/content_list 仍用原件
         cut_images_dir=MINERU_CUT_IMAGES_DIR,
-        pdf_bytes=content if file_type == "pdf" else None,
+        content=content,
         f_dump_md=f_dump_md,
         f_dump_content_list=f_dump_content_list,
         f_dump_middle_json=f_dump_middle_json,

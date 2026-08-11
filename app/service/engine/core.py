@@ -186,16 +186,8 @@ async def core_parse(
             ),
         )
 
-    # vlm / hybrid 引擎基于 PDFium 渲染 PDF，需先把图片字节转为 PDF 字节
-    # （与 MinerU 标准 CLI read_fn 行为一致）
-    if file_type == "image" and engine != EngineType.office:
-        from mineru.utils.pdf_image_tools import images_bytes_to_pdf_bytes
-
-        content = images_bytes_to_pdf_bytes(content)
-        logger.info(
-            f"Converted image to PDF bytes ({len(content)} bytes) for {engine.value} engine"
-        )
-
+    # vlm / hybrid 引擎基于 PDFium 渲染 PDF；图片已由调用方 parse_and_store
+    # 在入口统一转成 PDF，这里不会出现 image 类型。
     if engine == EngineType.office:
         middle_json, model_output = await asyncio.to_thread(_parse_office, content, file_type, image_writer)
     elif engine == EngineType.vlm:

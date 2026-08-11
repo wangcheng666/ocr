@@ -22,7 +22,7 @@ async def write_outputs_to_minio(
     model_output: list | Any | None = None,
     file_info: list | None = None,
     cut_images_dir: str = "",
-    pdf_bytes: bytes | None = None,
+    content: bytes | None = None,
     f_dump_md: bool = False,
     f_dump_content_list: bool = False,
     f_dump_middle_json: bool = True,
@@ -46,12 +46,12 @@ async def write_outputs_to_minio(
         model_output: 模型原始输出
         file_info: middle_json["pdf_info"]
         cut_images_dir: 图片子目录
-        pdf_bytes: PDF 文件字节（传入后配合 f_dump_full_page_images 使用）
+        content: 原始文件字节（图片已在解析入口统一转成 PDF，pdf/image 均以 PDF 字节进入）
         f_dump_md: 是否生成 Markdown
         f_dump_content_list: 是否生成 content_list JSON
         f_dump_middle_json: 是否写入 middle.json
         f_dump_model_output: 是否写入 model.json
-        f_dump_full_page_images: 是否保存每页全页图片（需传入 pdf_bytes）
+        f_dump_full_page_images: 是否保存每页全页图片（pdf 类型生效，图片已归一化为 pdf）
         f_make_md_mode: Markdown 生成模式
     """
     if f_dump_md and file_info is not None:
@@ -81,10 +81,11 @@ async def write_outputs_to_minio(
             json.dumps(model_output, ensure_ascii=False, indent=4),
         )
 
-    if f_dump_full_page_images and pdf_bytes is not None:
-        await save_full_page_images(pdf_bytes, writer)
+    if f_dump_full_page_images and file_type == "pdf" and content is not None:
+        # 图片已在解析入口统一转成 PDF，这里 content 即 PDF 字节
+        await save_full_page_images(content, writer)
 
-    if f_dump_docx and file_type in ("pdf", "image") and file_info is not None and docx_generator is not None:
+    if f_dump_docx and file_type == "pdf" and file_info is not None and docx_generator is not None:
         try:
             # docx 双写：标准版（公式渲染为 OMML）+ 原始公式版（LaTeX 原文）。
             # CPU 密集 + 内部读图（同步 I/O），整体放线程池
