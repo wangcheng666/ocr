@@ -136,4 +136,8 @@ async def parse_and_store(
         "engine": engine.value,
         "page_count": len(middle_json.get("pdf_info", [])),
         "download_url": download_url,
+        # 输出前缀（MinIO 路径），供调用方定位本次解析产物
+        "uuid": output_prefix,
+        # middle.json 内容（与写入 {stem}_middle.json 的一致，image_path 已带 cut_images/ 前缀）
+        "middle_json": middle_json_for_write,
     }

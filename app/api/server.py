@@ -70,7 +70,8 @@ async def parse_document(
     hybrid_opts = parse_hybrid_options(hybrid_options)
     content = await file.read()
     file_name = file.filename or f"unnamed_{uuid.uuid4().hex}"
-    output_prefix = uuid.uuid4().hex
+    # 与 /parse/minio 的 doc_id 保持一致：使用带横线的标准 UUID 作为 MinIO 前缀
+    output_prefix = str(uuid.uuid4())
 
     # 先上传原始文档到 MinIO，与后续结果在同一路径（异步，不阻塞事件循环）
     await build_async_minio_writer(output_prefix, MINIO_BUCKET_NAME).write(file_name, content)
